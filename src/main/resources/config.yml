@@ -1,0 +1,30 @@
+token: ""
+
+CfgReloadMessage: "&e|   Config successfully reloaded!"
+
+UnregistredUserFail: "&c|   This user is not linked!"
+SuccessUnregistredUser: "&e|   &aSuccessfully&e unlinked user &6%player%&e!"
+UnregistredUserNotify: "&cYour account has been unlinked from Discord!"
+
+NotPlayerError: "&c|   You are not a player!"
+SuccessUnconnectPlayer: "&eYou have &asuccessfully &eunlinked your account from Discord"
+
+TimeExpiredMessage: "&4&lYou did not link your Discord in time! Time has expired!"
+EnterCodeMessage: "&e|   Enter the command &6/connect &c&n&l%code%&e on the Discord server!"
+AcceptAuthMessage: "&e|   Approve the connection via the Discord bot (Direct Messages must be open)"
+DeclineAuthMessage: "&4&l Your server connection request was declined (IP address banned for 10 minutes)"
+
+
+CommandDescription: "Link your Discord account to Minecraft"
+CommandParamDescription: "Minecraft nickname"
+Commandresponce: "You have successfully linked the account %nick%"
+
+LoginProcessed: "&e|   You have &asuccessfully&e logged in!"
+
+AcceptJoinMessage: "Approve the connection to the server"
+SessionExpired: "Session has expired!"
+Accepted: "You approved the connection!"
+Decline: "You declined the connection!"
+
+Me: "Approve"
+ItsNotMe: "It's not me"

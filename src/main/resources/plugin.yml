@@ -1,0 +1,12 @@
+name: DiscordAuthPlus
+version: '1.0'
+main: MS.discordAuthPlus.DiscordAuthPlus
+api-version: '1.21'
+
+permissions:
+  DiscordAuthPlus.reload:
+    description: Reload Permission
+    default: op
+  DiscordAuthPlus.UnconnectUser:
+    description: UnconnectUser Permission
+    default: op
