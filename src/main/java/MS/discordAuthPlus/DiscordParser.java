@@ -5,6 +5,7 @@ import MS.discordAuthPlus.Strcut.BufferedPerson;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,13 +15,16 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.INTEGER;
@@ -29,16 +33,110 @@ import static net.dv8tion.jda.api.interactions.commands.OptionType.INTEGER;
 public class DiscordParser extends ListenerAdapter
 {
     private DiscordAuthPlus plugin;
-
+    private File UserFolder;
 
     public JDA jda;
+
+
     public DiscordParser(DiscordAuthPlus pl)
     {
         plugin = pl;
+        UserFolder = new File(pl.getDataFolder(),"Users");
         Init();
     }
 
-
+    public int MultiAccountByDiscord(String ID)
+    {
+        int count = 0;
+        for(File f : UserFolder.listFiles())
+        {
+            if(f.isFile())
+            {
+                try
+                {
+                    YamlConfiguration cfg =  YamlConfiguration.loadConfiguration(f);
+                    if(cfg.getString("DiscordID").equals(ID))
+                    {
+                        count++;
+                    }
+                }
+                catch(Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        return  count;
+    }
+    public List<String> MultiAccountNickByDiscord(String ID)
+    {
+        List<String> count = new ArrayList<String>();
+        for(File f : UserFolder.listFiles())
+        {
+            if(f.isFile())
+            {
+                try
+                {
+                    YamlConfiguration cfg =  YamlConfiguration.loadConfiguration(f);
+                    if(cfg.getString("DiscordID").equals(ID))
+                    {
+                        count.add(cfg.getString("Nickname"));
+                    }
+                }
+                catch(Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        return  count;
+    }
+    public int MultiAccountByIp(String Ip)
+    {
+        int count = 0;
+        for(File f : UserFolder.listFiles())
+        {
+            if(f.isFile())
+            {
+                try
+                {
+                    YamlConfiguration cfg =  YamlConfiguration.loadConfiguration(f);
+                    if(cfg.getString("RegisterIP").equals(Ip))
+                    {
+                        count++;
+                    }
+                }
+                catch(Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        return  count;
+    }
+    public List<String> MultiAccountNickByIp(String Ip)
+    {
+        List<String> count = new ArrayList<String>();
+        for(File f : UserFolder.listFiles())
+        {
+            if(f.isFile())
+            {
+                try
+                {
+                    YamlConfiguration cfg =  YamlConfiguration.loadConfiguration(f);
+                    if(cfg.getString("RegisterIP").equals(Ip))
+                    {
+                        count.add(cfg.getString("Nickname"));
+                    }
+                }
+                catch(Exception e)
+                {
+                    continue;
+                }
+            }
+        }
+        return  count;
+    }
     public void Init()
     {
         jda = JDABuilder.createLight(plugin.token, EnumSet.of(GatewayIntent.GUILD_MESSAGES, GatewayIntent.MESSAGE_CONTENT))
@@ -70,12 +168,23 @@ public class DiscordParser extends ListenerAdapter
               {
                   if(user.code == Code)
                   {
+
                       Player player = user.player;
                       YamlConfiguration yml = YamlWorker.GetByUUID(player.getUniqueId().toString());
-
+                      int ds = MultiAccountByDiscord(event.getUser().getId().toString());
+                      int ip = MultiAccountByIp(player.getAddress().getAddress().getHostAddress());
+                      if(ip>plugin.MaxAccs || ds >plugin.MaxAccs)
+                      {
+                          int result =  ds >= ip ? ds: ip;
+                          event.reply(plugin.MultiAccountLimitReachD.replaceAll("%total%",String.valueOf(result)).replaceAll("%max%",String.valueOf(plugin.MaxAccs)))
+                                  .setEphemeral(true)
+                                  .queue();
+                          return;
+                      }
                       yml.set("Nickname",player.getName());
                       yml.set("RegisterIP", player.getAddress().getAddress().getHostAddress());
-                      yml.set("DiscordID",event.getMember().getId());
+                      yml.set("DiscordID",event.getUser().getId());
+
                       YamlWorker.Save(yml,player.getUniqueId().toString());
                       al.Auth.remove(user);
                       LoginProcessed(player);

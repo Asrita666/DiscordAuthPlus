@@ -1,5 +1,5 @@
 name: DiscordAuthPlus
-version: '1.0'
+version: '1.1'
 main: MS.discordAuthPlus.DiscordAuthPlus
 api-version: '1.21'
 
@@ -9,4 +9,7 @@ permissions:
     default: op
   DiscordAuthPlus.UnconnectUser:
     description: UnconnectUser Permission
+    default: op
+  DiscordAuthPlus.UserInfo:
+    description: UserInfo Permission
     default: op

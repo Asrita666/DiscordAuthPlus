@@ -1,5 +1,14 @@
 token: ""
 
+Max-Multi-Account: 1
+
+InfoCommand:
+  - "&e|   Nick: &f%nick%&7(%UUID%)&r"
+  - "&e|   Multi-accounts: &6%multi%/&c%max% &7(%accs%)"
+  - "&e|   Registration IP: %answer% &6|&a%regip%&6|&c%ip%"
+  - "&e|   Cached IP: &6%CacheIp%"
+
+MultiAccLimitReach: "You have exceeded the multi-account limit! %total%/%max%"
 CfgReloadMessage: "&e|   Config successfully reloaded!"
 
 UnregistredUserFail: "&c|   This user is not linked!"

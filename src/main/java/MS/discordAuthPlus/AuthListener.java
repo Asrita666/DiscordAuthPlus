@@ -101,6 +101,8 @@ public class AuthListener  implements Listener
         plugin.JoinedAuth.add(p);
         p.sendMessage(Utility.ChatColorParser(plugin.AcceptAuthMessage));
         plugin.Discord.NeedAccept(p);
+        YamlConfiguration cfg = YamlWorker.GetByUUID(p.getUniqueId().toString());
+
     }
     public void FirstTimeConnect(Player player)
     {
