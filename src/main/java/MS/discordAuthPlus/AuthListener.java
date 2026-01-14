@@ -44,8 +44,18 @@ public class AuthListener  implements Listener
             if(user.player.getUniqueId() == ui)
             {
                 plugin.Auth.remove(user);
+                return;
             }
         }
+        UUID uid = event.getPlayer().getUniqueId();
+        for(Player p : plugin.JoinedAuth)
+        {
+            if(p.getUniqueId() == uid)
+            {
+                plugin.JoinedAuth.remove(p);
+            }
+        }
+
     }
 
     @EventHandler(priority = EventPriority.HIGH)
